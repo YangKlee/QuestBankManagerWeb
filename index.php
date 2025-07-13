@@ -29,12 +29,29 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <?php
+                    require_once "./model/questBankDAO.php";
+                    $bankDAO = new questBankDAO();
+                    $result = $bankDAO->getAllBank();
+                    while ($row = $result->fetch_assoc()) 
+                    {
+                        echo "<tr>";
+                        echo "<td>".$row['IDBank']."</td>";
+                        echo "<td>".$row['NameBank']."</td>";
+                        if($row['LimitQuestion'] == 0)
+                            echo "<td>" . $bankDAO->countQuestion($row['IDBank']). "</td>";
+                        else
+                            echo "<td>" . $bankDAO->countQuestion($row['IDBank'])."/".$row['LimitQuestion']. "</td>";
+                        echo '<td><a href="">Truy cập</a> | <a href="#">Sửa </a> | <a href="./process/deleteBank.php?idbank='.$row['IDBank'].'">Xóa</a></td>';
+                        echo "</tr>";
+                    }
+                ?>
+                <!-- <tr>
                     <td>QB001</td>
                     <td>Ngân hàng Toán 12</td>
                     <td>120</td>
                     <td><a href="#">Truy cập</a> | <a href="#">Sửa </a> | <a href="#">Xóa</a></td>
-                </tr>
+                </tr> -->
 
             </tbody>
         </table>

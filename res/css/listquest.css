@@ -1,0 +1,39 @@
+.list-questbank-title{
+    display: block;
+    font-size: 2.2rem;
+    text-align: center;
+    font-weight: bold;
+    color: red;
+}
+.list-questbank-table{
+    border: 1px solid black;
+    
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+.list-questbank-table thead{
+    border: 1px black solid;
+}
+.list-questbank-table tbody{
+    height: 10px;
+}
+.list-questbank-table th,
+.list-questbank-table td {
+    border: 1px black solid;
+    padding: 12px;
+    text-align: center; /* canh giữa nội dung */
+    vertical-align: middle;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+.function-button{
+    border: none;
+    padding: 10px 15px;
+    
+    border-radius: 20px;
+}
+.function-button.add{
+    background-color: green;
+    color: white;
+}

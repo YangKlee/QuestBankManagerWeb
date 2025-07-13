@@ -1,3 +1,16 @@
+<?php require "./partials/header.php";
+    if($_SERVER["REQUEST_METHOD"] == "POST")
+    {
+        require "./model/questBankDAO.php";
+        $bankDAO = new questBankDAO();
+        $bankDAO->add($_POST['namebank'], $_POST['questlimit'], $_SESSION['UID']);
+        header('Location: index.php');
+        exit;
+    }
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,12 +21,12 @@
     <link rel="stylesheet" href="./res/css/layout.css">
     <link rel="stylesheet" href="./res/css/addbank.css">
 </head>
-<?php require "./partials/header.php" ?>
+
 <body>
     
     <div class="main-container">
         <h1 class="title">Thêm ngân hàng</h1>
-        <form action="" method="post">
+        <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
             <div class="input-warpper title-bank">
                 <label for="">Tên ngân hàng:</label>
                 <input type="text" name="namebank" required>
