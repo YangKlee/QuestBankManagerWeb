@@ -1,3 +1,22 @@
+<?php
+    if($_SERVER['REQUEST_METHOD'] == 'POST')
+    {
+        require_once "./model/userDAO.php";
+        $userDAO = new userDAO();
+        $auth = $userDAO->authUser($_POST["username"], $_POST["password"]);
+        if($auth != null)
+        {
+            session_start();
+            $_SESSION["UID"] = $auth;
+            header("Location: ./index.php");
+            exit;
+        }
+        else
+        {
+            echo "<script>alert('Đăng nhập thất bại');</script>";
+        }
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,10 +33,10 @@
         </div>
         <div class="right-container">
             <h1>Đăng nhập</h1>
-            <form method="POST" action="" >
+            <form method="POST" action="<?php echo $_SERVER['PHP_SELF'] ?>" >
                 
-                <input type="text" placeholder="Tên đăng nhập" name="username_tx">
-                <input type="password" placeholder="Mật khẩu" name="password_tx">
+                <input type="text" placeholder="Tên đăng nhập" required name="username">
+                <input type="password" placeholder="Mật khẩu" required name="password">
                 <input type="submit" value="Đăng nhập">
             </form>
         </div>

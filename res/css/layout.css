@@ -1,0 +1,14 @@
+.main-container {
+    margin-left: 10%;
+    margin-right: 10%;
+    background-color: #ffffff ; /* sáng hơn nền body */
+    padding: 20px;
+    border-radius: 2px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* bóng đổ sâu */
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}
+body {
+    background-color: 	#f5f5f5; /* tối nhưng không quá đen */
+}
