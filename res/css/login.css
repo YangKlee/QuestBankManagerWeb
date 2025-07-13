@@ -1,0 +1,52 @@
+/* login.css */
+
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5; 
+    font-family: Arial, sans-serif; 
+}
+
+.login-main {
+    display: flex;
+    width: 600px; 
+    height: 400px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.left-container {
+    flex: 1;
+    background-image: url("../img/login-bg.png");
+    background-size: cover;        
+    background-position: center;    
+    background-repeat: no-repeat;   
+}
+.right-container {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.right-container h1{
+    text-align: center;
+    padding-bottom: 20px;
+}
+form input[type="text"],
+form input[type="password"],
+form input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
