@@ -1,0 +1,22 @@
+.main-container h1{
+    display: block;
+    color: red;
+    text-align: center;
+}
+.input-warpper{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 10px;
+}
+.input-warpper input
+{
+    padding: 5px 10px;
+}
+.input-warpper label{
+    font-size: 1.1rem;
+}
+.main-container {
+    margin-left: 30%;
+    margin-right: 30%;
+}

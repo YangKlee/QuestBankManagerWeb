@@ -12,3 +12,17 @@
 body {
     background-color: 	#f5f5f5; /* tối nhưng không quá đen */
 }
+.function-button{
+    border: none;
+    padding: 10px 15px;
+    
+    border-radius: 20px;
+}
+.function-button.add{
+    background-color: green;
+    color: white;
+}
+.function-button.reject{
+    background-color: red;
+    color: white;
+}
