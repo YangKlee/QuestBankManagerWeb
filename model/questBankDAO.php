@@ -15,6 +15,12 @@
             return $result;
 
         }
+        function getFromQuery($sql)
+        {
+            $conn = $this->getConnection();
+            $result = mysqli_query($conn,$sql);
+            return $result;
+        }
         function countQuestion($idBank)
         {
             $conn = $this->getConnection();
@@ -38,6 +44,12 @@
         {
             $conn = $this->getConnection();
             mysqli_query($conn, "Delete from questionbank where IdBank = '{$idBank}'");
+        }
+        function getMaxQuestion($idBank)
+        {
+            $conn = $this->getConnection();
+            $result = mysqli_query($conn,"Select LimitQuestion from questionbank where IdBank = {$idBank}");
+            return $result->fetch_assoc()['LimitQuestion'];
         }
 
         

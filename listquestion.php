@@ -1,7 +1,14 @@
 <?php
+session_start();
     if($_SERVER["REQUEST_METHOD"] != 'GET' || !isset($_GET['idbank']))
     {
         header("Location: index.php");
+        exit;
+    }
+    else
+    {
+        $_SESSION['id_bank_view'] = $_GET['idbank'];
+       
     }
 ?>
 <!DOCTYPE html>
@@ -12,7 +19,7 @@
     <link rel="stylesheet" href="./res/css/reset.css">
     <link rel="stylesheet" href="./res/css/layout.css">
     <link rel="stylesheet" href="./res/css/listquest.css">
-    <title>Document</title>
+    <title>Danh sách câu hỏi</title>
 </head>
 <?php require "./partials/header.php" ?>
 <?php 

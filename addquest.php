@@ -1,12 +1,69 @@
 <?php
-    if(!isset($_GET['idbank']))
+    session_start();
+    require "./partials/header.php";
+    if(!isset($_SESSION['id_bank_view']))
     {
         header("Location: index.php");
         exit;
     }
-    require "./partials/header.php";
+    $message = "";
+    $nextvalue = "";
+    function checkTrungDapAn()
+    {
+        for ($i = 1; $i <=4; $i++)
+        {
+            for ($j = $i+1; $j <=4; $j++)
+            {
+                if($_POST['content-ans'.$i] == $_POST['content-ans'.$j])
+                    return false;
+            }
+            return true;
+        }
+    }
+    require "./model/questBankDAO.php";
+    $bankDAO = new questBankDAO();
+    $totalQuestion =  $bankDAO->countQuestion($_SESSION['id_bank_view']);
+    $maxQuestion = $bankDAO->getMaxQuestion($_SESSION['id_bank_view']);
     if($_SERVER["REQUEST_METHOD"] == "POST")
     {
+        require "./model/questionDAO.php";
+        $questDAO = new questionDAO();
+        
+        if(!checkTrungDapAn())
+        {
+            $message ="Trùng đáp án kìa!";
+        }
+        else if($totalQuestion >= $maxQuestion && $maxQuestion != 0)
+        {
+            $message = "Vượt quá số lượng câu hỏi có trong ngân hàng";
+        }
+        else
+        {
+            $ans = 0;
+            if(isset($_POST['ans']))
+            {
+                $ans = $_POST['ans'];
+            }
+            $kq = $questDAO->add($_SESSION['id_bank_view'], $_POST['STT'], $_POST['content-quest'],
+             $_POST['content-ans1'], $_POST['content-ans2'], $_POST['content-ans3'], $_POST['content-ans4'], $ans,
+              $_POST['content-explan'], $_SESSION['UID'] );
+            if($kq)
+            {
+                if($_POST['iscontinue'])
+                {
+                    $nextvalue = $_POST['STT'] +1;
+                }
+                else
+                {
+                    header("Location: ./listquestion.php?idbank=".$_SESSION['id_bank_view']);
+                }
+            } 
+            else
+            {
+                $message  = "Thêm thất bại ròi!";
+            }
+            
+        }
 
     }
 
@@ -17,7 +74,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thêm câu hỏi - Ngân hàng ???</title>
+    <title>Thêm câu hỏi - Ngân hàng <?php echo $_SESSION['id_bank_view']  ?></title>
     <link rel="stylesheet" href="./res/css/reset.css">
     <link rel="stylesheet" href="./res/css/layout.css">
     <link rel="stylesheet" href="./res/css/addquest.css">
@@ -27,17 +84,17 @@
     
     <div class="main-container">
         <div class="title-container">
-            <h1 class="title">Thêm câu hỏi -  Ngân hàng: ???</h1>
-            <h2 class="title-info">Tổng số câu hỏi: ???</h2>
+            <h1 class="title">Thêm câu hỏi -  Ngân hàng: <?php echo $_SESSION['id_bank_view'] ?></h1>
+            <h2 class="title-info">Tổng số câu hỏi: <?php echo $totalQuestion  .'/' .  $maxQuestion ?></h2>
         </div>
         <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
             <div class="input-warpper stt-question">
                 <label for="">Số thứ tự câu:</label>
-                <input type="number" name="STT" required>
+                <input type="number" name="STT" required value="<?php echo $nextvalue ?>">
             </div>
             <div class="input-warpper quest-content">
                 <label for="">Nội dung câu hỏi</label>
-                <textarea name="content" class="content-question"></textarea>
+                <textarea name="content-quest" class="content-question"></textarea>
             </div>
             <div class="input-warpper ans-1">
                 <label for="">Đáp án 1:</label>
@@ -72,7 +129,7 @@
                 <input type="checkbox" name="iscontinue">
                 <label for="">Tiếp tục với câu sau</label>
             </div>
-
+            <label style="color: red;" for=""><?php echo $message ?></label>
             <div class="function-btn-warpper">
                 <input class="function-button add" type="submit" value="Thêm">
                 <a href="./index.php"><button class="function-button reject" type="button">Hủy</button></a>
