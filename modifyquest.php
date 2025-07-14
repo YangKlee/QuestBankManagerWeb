@@ -1,7 +1,7 @@
 <?php
     session_start();
     require "./partials/header.php";
-    if(!isset($_SESSION['id_bank_view']))
+    if(!isset($_SESSION['id_bank_view']) && !isset($_GET['idquest']))
     {
         header("Location: index.php");
         exit;
@@ -33,10 +33,6 @@
         {
             $message ="Trùng đáp án kìa!";
         }
-        else if($totalQuestion >= $maxQuestion && $maxQuestion != 0)
-        {
-            $message = "Vượt quá số lượng câu hỏi có trong ngân hàng";
-        }
         else
         {
             $ans = 0;
@@ -44,19 +40,14 @@
             {
                 $ans = $_POST['ans'];
             }
-            $kq = $questDAO->add($_SESSION['id_bank_view'], $_POST['STT'], $_POST['content-quest'],
+            $kq = $questDAO->modify($_GET['idquest'], $_POST['STT'],$_SESSION['id_bank_view'], $_POST['content-quest'],
              $_POST['content-ans1'], $_POST['content-ans2'], $_POST['content-ans3'], $_POST['content-ans4'], $ans,
-              $_POST['content-explan'], $_SESSION['UID'] );
+              $_POST['content-explan'] );
             if($kq)
             {
-                if($_POST['iscontinue'])
-                {
-                    $nextvalue = $_POST['STT'] +1;
-                }
-                else
-                {
+
                     header("Location: ./listquestion.php?idbank=".$_SESSION['id_bank_view']);
-                }
+
             } 
             else
             {
@@ -81,7 +72,11 @@
 </head>
 
 <body>
-    
+    <?php 
+                require "./model/questionDAO.php";
+        $questDAO = new questionDAO();
+        $data = $questDAO->getQuestion($_GET['idquest'], $_SESSION['id_bank_view']);
+    ?>
     <div class="main-container">
         <div class="title-container">
             <h1 class="title">Thêm câu hỏi -  Ngân hàng: <?php echo $_SESSION['id_bank_view'] ?></h1>
@@ -90,28 +85,29 @@
         <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
             <div class="input-warpper stt-question">
                 <label for="">Số thứ tự câu:</label>
-                <input type="number" name="STT" required value="<?php echo $nextvalue ?>">
+                <input type="number" name="STT" required value="<?php echo $data['STT'] ?>">
             </div>
             <div class="input-warpper quest-content">
                 <label for="">Nội dung câu hỏi</label>
-                <textarea name="content-quest" class="content-question"></textarea>
+                <textarea name="content-quest" class="content-question"><?php echo $data['Title'] ?></textarea>
             </div>
             <div class="input-warpper ans-1">
                 <label for="">Đáp án 1:</label>
-                <textarea name="content-ans1" class="content-ans"></textarea>
+                <textarea name="content-ans1" class="content-ans"><?php echo $data['Ans1'] ?></textarea>
             </div>
             <div class="input-warpper ans-2">
                 <label for="">Đáp án 2:</label>
-                <textarea name="content-ans2" class="content-ans"></textarea>
+                <textarea name="content-ans2" class="content-ans"><?php echo $data['Ans2'] ?></textarea>
             </div>
             <div class="input-warpper ans-3">
                 <label for="">Đáp án 3:</label>
-                <textarea name="content-ans3" class="content-ans"></textarea>
+                <textarea name="content-ans3" class="content-ans"><?php echo $data['Ans3'] ?></textarea>
             </div>
             <div class="input-warpper ans-4">
                 <label for="">Đáp án 4:</label>
-                <textarea name="content-ans4" class="content-ans"></textarea>
+                <textarea name="content-ans4" class="content-ans"><?php echo $data['Ans4'] ?></textarea>
             </div>
+ 
             <script>
                 function showHintQuestion(numQuest)
                 {
@@ -123,47 +119,28 @@
                     }
                      listAns[numQuest-1].style.backgroundColor = "yellow";
                 }
+                                // Gọi hàm khi DOM đã đầy đủ
+                window.addEventListener("DOMContentLoaded", () => {
+                    showHintQuestion(<?php echo $data['CorrectAns']; ?>);
+                });
             </script>
             <div class="input-warpper choose-ans">
                 <label for="">Chọn đáp án đúng:</label>
                 <div class="ans-warpper-list">
-                    <span> <label for="">1:</label> <input onclick="showHintQuestion(1)" type="radio" name="ans" value="1"></span>
-                    <span> <label for="">2:</label> <input  onclick="showHintQuestion(2)" type="radio" name="ans" value="2"></span>
-                    <span> <label for="">3:</label> <input  onclick="showHintQuestion(3)" type="radio" name="ans" value="3"></span>
-                    <span> <label for="">4:</label>  <input   onclick="showHintQuestion(4)"type="radio" name="ans" value="4"></span> 
+                    <span> <label for="">1:</label> <input onclick="showHintQuestion(1)" type="radio" name="ans" value="1" <?php echo ($data['CorrectAns'] == 1) ? "checked" : "";?>></span>
+                    <span> <label for="">2:</label> <input onclick="showHintQuestion(2)" type="radio" name="ans" value="2" <?php echo ($data['CorrectAns'] == 2) ? "checked" : "";?>></span>
+                    <span> <label for="">3:</label>  <input onclick="showHintQuestion(3)" type="radio" name="ans" value="3" <?php echo ($data['CorrectAns'] == 3) ? "checked" : "";?>></span>
+                    <span> <label for="">4:</label>  <input onclick="showHintQuestion(4)" type="radio" name="ans" value="4" <?php echo ($data['CorrectAns'] == 4) ? "checked" : "";?>></span> 
                 </div>
             </div>
             <div class="input-warpper giaithich">
                 <label for="">Giải thích:</label>
-                <textarea name="content-explan" id="content-explan"></textarea>
+                <textarea name="content-explan" id="content-explan"><?php echo $data['Comment'] ?></textarea>
             </div>
-            <div class="input-warpper iscontinue">
-                
-                <?php 
-                    if(isset($_POST['iscontinue']))
-                    {
-                        if($_POST['iscontinue'])
-                        {
-                            echo '<input type="checkbox" name="iscontinue" checked>';
-                        }
-                        else
-                        {
-                            echo '<input type="checkbox" name="iscontinue">';
-                        }
-                    }
-                    else
-                    {
-                        echo '<input type="checkbox" name="iscontinue">';
-                    }
-                    
-                ?>
-                <label for="">Tiếp tục với câu sau</label>
-            </div>
-            
             <label style="color: red;" for=""><?php echo $message ?></label>
             <div class="function-btn-warpper">
-                <input class="function-button add" type="submit" value="Thêm">
-                <a href="./listquestion.php?idbank=<?php echo $_SESSION['id_bank_view'] ?>"><button class="function-button reject" type="button">Hủy</button></a>
+                <input class="function-button add" type="submit" value="Sửa">
+               <a href="./listquestion.php?idbank=<?php echo $_SESSION['id_bank_view'] ?>"><button class="function-button reject" type="button">Hủy</button></a>
             </div>
 
         </form>

@@ -29,6 +29,8 @@ session_start();
 <body>
     <div class="main-container">
         <label for="" class="list-questbank-title">Danh sách câu hỏi</label>
+        <label for="" class="list-questbank-info">Mã ngân hàng: <?php echo $_GET['idbank'] ?></label>
+
         <div class="function-button">
             <a href="./addquest.php"><button class="function-button add">Thêm câu hỏi</button></a>
             <a href="#"><button class="function-button export">Xuất Azota</button></a>
@@ -77,7 +79,7 @@ session_start();
                             echo "<td class='trueans'>".$_row['Ans4']."</td>";
                         else
                             echo "<td>".$_row['Ans4']."</td>";
-                        echo '<td><a href="#">Sửa</a> | <a href="#">Xóa</a></td>';
+                        echo '<td><a href="./modifyquest.php?idquest='.$_row['QuestionID'].'">Sửa</a> |<a  href="./process/deleteQuest.php?idquest='.$_row['QuestionID'].'&idbank='.$_GET['idbank'].'">Xóa</a></td>';
                         echo "</tr>";
                     }
                 
