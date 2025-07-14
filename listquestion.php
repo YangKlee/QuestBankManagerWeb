@@ -41,15 +41,49 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <?php 
+                    require_once "./model/questionDAO.php";
+                    $questDAO = new questionDAO();
+                    $result = $questDAO->getAllQuestion($_GET['idbank']);
+                    while ($_row = mysqli_fetch_assoc($result))
+                    {
+                        $correctAns = $_row['CorrectAns'];
+                        echo "<tr>";
+                        echo "<td>".$_row['STT']."</td>";
+                        echo "<td>".$_row['Title']."</td>";
+                        if($correctAns == 1)
+                            echo "<td class='trueans'>".$_row['Ans1']."</td>";
+                        else
+                            echo "<td>".$_row['Ans1']."</td>";
+
+                        if($correctAns == 2)
+                            echo "<td class='trueans'>".$_row['Ans2']."</td>";
+                        else
+                            echo "<td>".$_row['Ans2']."</td>";
+
+                        if($correctAns == 3)
+                            echo "<td class='trueans'>".$_row['Ans3']."</td>";
+                        else
+                            echo "<td>".$_row['Ans3']."</td>";
+
+                        if($correctAns == 4)
+                            echo "<td class='trueans'>".$_row['Ans4']."</td>";
+                        else
+                            echo "<td>".$_row['Ans4']."</td>";
+                        echo '<td><a href="#">Sửa</a> | <a href="#">Xóa</a></td>';
+                        echo "</tr>";
+                    }
+                
+                ?>
+                <!-- <tr>
                     <td>QB001</td>
                     <td>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugiat iste reiciendis ullam soluta quasi cum reprehenderit accusantium amet repellat dolor perspiciatis aliquid mollitia sapiente vel, hic saepe, quibusdam dolore itaque.</td>
                     <td>Shikanoko Nokonoko koshi</td>
-                    <td>Shikanoko Nokonoko koshi</td>
+                    <td class="trueans">Shikanoko Nokonoko koshi</td>
                     <td>Shikanoko Nokonoko koshi</td>
                     <td>Shikanoko Nokonoko koshi</td>
                     <td><a href="#">Sửa</a> | <a href="#">Xóa</a></td>
-                </tr>
+                </tr> -->
 
             </tbody>
         </table>

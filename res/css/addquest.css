@@ -1,0 +1,46 @@
+.main-container {
+    margin-left: 20%;
+    margin-right: 20%;
+}
+.main-container h1{
+    display: block;
+    color: red;
+    text-align: center;
+}
+.input-warpper{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 10px;
+}
+.input-warpper input
+{
+    padding: 5px 10px;
+}
+.input-warpper label{
+    font-size: 1.1rem;
+}
+.input-warpper textarea{
+    max-width: 100%;
+    max-height: 500px;
+    font-size: 1.2rem;
+    padding: 2px 2px;
+}
+.content-question{
+    height: 150px;
+}
+.content-ans{
+    height: 80px;
+}
+.input-warpper.stt-question input{
+    width: 100px;
+}
+.input-warpper.iscontinue{
+    display: flex;
+    flex-direction: row;
+}
+.ans-warpper-list{
+    display: flex;
+    gap: 20px;
+    font-size: 1.5rem;
+}
