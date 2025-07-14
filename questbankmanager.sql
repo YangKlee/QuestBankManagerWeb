@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th7 13, 2025 lúc 11:08 AM
+-- Thời gian đã tạo: Th7 14, 2025 lúc 09:24 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -51,9 +51,17 @@ CREATE TABLE `question` (
 CREATE TABLE `questionbank` (
   `IDBank` int(11) NOT NULL,
   `NameBank` varchar(255) NOT NULL,
+  `LimitQuestion` int(11) NOT NULL,
   `TimeCreated` datetime DEFAULT current_timestamp(),
   `UserCreated` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `questionbank`
+--
+
+INSERT INTO `questionbank` (`IDBank`, `NameBank`, `LimitQuestion`, `TimeCreated`, `UserCreated`) VALUES
+(8, 'test bank lon', 1000, '2025-07-13 18:41:38', 1);
 
 -- --------------------------------------------------------
 
@@ -116,7 +124,7 @@ ALTER TABLE `question`
 -- AUTO_INCREMENT cho bảng `questionbank`
 --
 ALTER TABLE `questionbank`
-  MODIFY `IDBank` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDBank` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT cho bảng `userdata`
