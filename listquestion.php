@@ -24,7 +24,12 @@ session_start();
 <?php require "./partials/header.php" ?>
 <?php 
     //session_start();    
-
+    $question_per_page = 10;
+    $current_page = $_GET['page'] ?? 1;
+    require_once "./model/questBankDAO.php";
+    $bankDAO = new questBankDAO();
+    $totalQuestion = $bankDAO->countQuestion($_GET['idbank']);
+    $totalPage = ceil($totalQuestion / $question_per_page);
 ?>
 <body>
     <div class="main-container">
@@ -53,7 +58,8 @@ session_start();
                 <?php 
                     require_once "./model/questionDAO.php";
                     $questDAO = new questionDAO();
-                    $result = $questDAO->getAllQuestion($_GET['idbank']);
+                    $result = $questDAO->getFromQuery("Select * from question where IDBank = ".$_GET['idbank']." ORDER BY STT ASC
+                     LIMIT ".$question_per_page." OFFSET ".($current_page - 1) * $question_per_page."");
                     while ($_row = mysqli_fetch_assoc($result))
                     {
                         $correctAns = $_row['CorrectAns'];
@@ -96,6 +102,34 @@ session_start();
 
             </tbody>
         </table>
+        <?php 
+                echo '<div class="page-navigation">';
+                if($current_page > 1)
+                {
+                    echo '<a href="./listquestion.php?idbank='.$_GET['idbank'].'&page='.($current_page - 1).'">&#8592;</a>';
+                }
+                for($i = 1; $i <= $totalPage; $i++)
+                {
+                    if($i < $current_page - 1 || $i > $current_page + 1)
+                    {
+                        continue;
+                    }
+
+                    if($i == $current_page)
+                    {
+                        echo '<a class="activate">'.$i.'</a>';
+                    }
+                    else{
+                        echo '<a href="./listquestion.php?idbank='.$_GET['idbank'].'&page='.$i.'">'.$i.'</a>';
+                    }
+                }
+                if($current_page < $totalPage)
+                {
+                    echo '<a href="./listquestion.php?idbank='.$_GET['idbank'].'&page='.($current_page + 1).'">&#8594;</a>';
+                }
+                echo '</div>';
+        
+        ?>
     </div>
 </body>
 </html>

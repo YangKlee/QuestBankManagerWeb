@@ -44,3 +44,9 @@
     gap: 20px;
     font-size: 1.5rem;
 }
+@media screen and (max-width: 1500px) {
+    .main-container{
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+}

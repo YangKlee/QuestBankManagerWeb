@@ -114,6 +114,11 @@
             $result = mysqli_query($conn,"Select * from question where QuestionID = {$idquest} and IdBank = {$idBank}");
             return $result->fetch_assoc();
         }
+        function getFromQuery($sql)
+        {
+             $conn = $this->getConnection();
+            return mysqli_query($conn, $sql);
+        }
 
         
     }

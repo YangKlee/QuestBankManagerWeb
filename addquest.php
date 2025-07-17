@@ -51,6 +51,9 @@
             {
                 if($_POST['iscontinue'])
                 {
+                    // cập nhật lại số câu
+                    $totalQuestion =  $bankDAO->countQuestion($_SESSION['id_bank_view']);
+                    $maxQuestion = $bankDAO->getMaxQuestion($_SESSION['id_bank_view']);
                     $nextvalue = $_POST['STT'] +1;
                 }
                 else

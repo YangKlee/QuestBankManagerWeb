@@ -45,3 +45,18 @@
     font-size: 1.2rem;
     text-align: center;
 }
+.page-navigation
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 40px;
+}
+.page-navigation a.activate{
+    background-color: red;
+    color: white;
+    padding: 10px 15px;
+    text-align: center  ;
+    border-radius: 50px;
+}

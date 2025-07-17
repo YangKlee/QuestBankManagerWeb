@@ -11,7 +11,8 @@
 <body>
     <div class="header-container">
         <div class="header-left">
-            <h1>Hệ thống quản lý ngân hàng câu hỏi</h1>
+            <h1><a href="index.php" style="text-decoration: none; color: inherit;">Hệ thống quản lý ngân hàng câu hỏi</a></h1>
+
         </div>
         <div class="header-right">
             <label for=""><?php echo $_SESSION['Username']?></label>

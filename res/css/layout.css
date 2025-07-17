@@ -26,3 +26,9 @@ body {
     background-color: red;
     color: white;
 }
+@media screen and (max-width: 1500px) {
+    .main-container{
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+}
