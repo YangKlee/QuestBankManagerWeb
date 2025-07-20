@@ -35,12 +35,24 @@ session_start();
     <div class="main-container">
         <label for="" class="list-questbank-title">Danh sách câu hỏi</label>
         <label for="" class="list-questbank-info">Mã ngân hàng: <?php echo $_GET['idbank'] ?></label>
-
-        <div class="function-button">
-            <a href="./addquest.php"><button class="function-button add">Thêm câu hỏi</button></a>
-            <a href="#"><button class="function-button export">Xuất Azota</button></a>
-            <a href="#"><button class="function-button export">Xuất CSV</button></a>
-            <a href="./index.php"><button class="function-button reject">Thoát ngân hàng</button></a>
+        <div class="function-warpper">
+            <div class="function-button">
+                <a href="./addquest.php"><button class="function-button add">Thêm câu hỏi</button></a>
+                <a href="#"><button class="function-button export">Xuất Azota</button></a>
+                <a href="#"><button class="function-button export">Xuất CSV</button></a>
+                <a href="./index.php"><button class="function-button reject">Thoát ngân hàng</button></a>
+                <?php if(isset($_GET['search'])): ?>
+                <a href="./listquestion.php?idbank=<?php echo $_GET['idbank'] ?>"><button class="function-button reject">Thoát tìm kiếm</button></a>
+                <?php endif ?>
+                
+            </div>
+            <div class="search-warpper">
+                <form action="<?php echo $_SERVER['PHP_SELF'] ?>">
+                    <input type="text" style="display: none;" name="idbank" value="<?php echo $_GET['idbank'] ?>">
+                    <input type="text" name="search" placeholder="Tìm kiếm câu hỏi...">
+                    <input type="submit" name="sumit-btn" value="Tìm kiếm">
+                </form>
+            </div>
         </div>
         <table class="list-questbank-table">
             <thead>
@@ -58,33 +70,31 @@ session_start();
                 <?php 
                     require_once "./model/questionDAO.php";
                     $questDAO = new questionDAO();
+                    if(isset($_GET['search']))
+                    {
+                        $searchKey = htmlspecialchars(trim($_GET['search']));
+                        $result = $questDAO->getFromQuery("Select * from question where IDBank = ".$_GET['idbank']." AND Title LIKE '%". $searchKey."%' ORDER BY STT ASC");
+                    }
+                    else
+                    {
                     $result = $questDAO->getFromQuery("Select * from question where IDBank = ".$_GET['idbank']." ORDER BY STT ASC
                      LIMIT ".$question_per_page." OFFSET ".($current_page - 1) * $question_per_page."");
+                    }
+
                     while ($_row = mysqli_fetch_assoc($result))
                     {
                         $correctAns = $_row['CorrectAns'];
                         echo "<tr>";
                         echo "<td>".$_row['STT']."</td>";
                         echo "<td>".$_row['Title']."</td>";
-                        if($correctAns == 1)
-                            echo "<td class='trueans'>".$_row['Ans1']."</td>";
-                        else
-                            echo "<td>".$_row['Ans1']."</td>";
-
-                        if($correctAns == 2)
-                            echo "<td class='trueans'>".$_row['Ans2']."</td>";
-                        else
-                            echo "<td>".$_row['Ans2']."</td>";
-
-                        if($correctAns == 3)
-                            echo "<td class='trueans'>".$_row['Ans3']."</td>";
-                        else
-                            echo "<td>".$_row['Ans3']."</td>";
-
-                        if($correctAns == 4)
-                            echo "<td class='trueans'>".$_row['Ans4']."</td>";
-                        else
-                            echo "<td>".$_row['Ans4']."</td>";
+                        for ($i = 1; $i <= 4; $i++) {
+                            if ($correctAns == $i && $_row['Comment'] != "")
+                                echo "<td class='verifyans'>" . $_row['Ans' . $i] . "</td>";
+                            else if ($correctAns == $i)
+                                echo "<td class='trueans'>" . $_row['Ans' . $i] . "</td>";
+                            else
+                                echo "<td>" . $_row['Ans' . $i] . "</td>";
+                        }
                         echo '<td><a href="./modifyquest.php?idquest='.$_row['QuestionID'].'">Sửa</a> |<a  href="./process/deleteQuest.php?idquest='.$_row['QuestionID'].'&idbank='.$_GET['idbank'].'">Xóa</a></td>';
                         echo "</tr>";
                     }
@@ -103,7 +113,10 @@ session_start();
             </tbody>
         </table>
         <?php 
-                echo '<div class="page-navigation">';
+                if(isset($_GET['search']))
+                    echo '<div class="page-navigation hidden" >';
+                else
+                    echo '<div class="page-navigation" >';
                 if($current_page > 1)
                 {
                     echo '<a href="./listquestion.php?idbank='.$_GET['idbank'].'&page='.($current_page - 1).'">&#8592;</a>';
