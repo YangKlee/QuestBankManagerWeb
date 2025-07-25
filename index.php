@@ -42,7 +42,7 @@
                             echo "<td>" . $bankDAO->countQuestion($row['IDBank']). "</td>";
                         else
                             echo "<td>" . $bankDAO->countQuestion($row['IDBank'])."/".$row['LimitQuestion']. "</td>";
-                        echo '<td><a href="./listquestion.php?idbank='.$row['IDBank'].'">Truy cập</a> | <a href="#">Sửa </a> | <a href="./process/deleteBank.php?idbank='.$row['IDBank'].'">Xóa</a></td>';
+                        echo '<td><a href="./listquestion.php?idbank='.$row['IDBank'].'">Truy cập</a> ';
                         echo "</tr>";
                     }
                 ?>

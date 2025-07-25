@@ -1,5 +1,7 @@
 <?php 
-    require_once __DIR__ . "/../process/loadsession.php"
+    require_once __DIR__ . "/../process/loadsession.php";
+    require_once __DIR__ . "/./footer.php";
+    require_once __DIR__ . "/./loading.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
