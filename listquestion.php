@@ -38,7 +38,7 @@ session_start();
         <div class="function-warpper">
             <div class="function-button">
                 <a href="./addquest.php"><button class="function-button add">Thêm câu hỏi</button></a>
-                <a href="#"><button class="function-button export">Xuất Azota</button></a>
+                <a href="./exportQuestionAzota.php?idbank=<?php echo $_GET['idbank']?>"><button class="function-button export">Xuất Azota</button></a>
                 <a href="#"><button class="function-button export">Xuất CSV</button></a>
                 <a href="./index.php"><button class="function-button reject">Thoát ngân hàng</button></a>
                 <?php if(isset($_GET['search'])): ?>

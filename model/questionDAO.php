@@ -105,7 +105,7 @@
         function getAllQuestion($idBank)
         {
             $conn = $this->getConnection();
-            $result = mysqli_query($conn, "Select * from question where IdBank = {$idBank}");
+            $result = mysqli_query($conn, "Select * from question where IdBank = {$idBank} ORDER BY STT ASC");
             return $result;
         }
         function getQuestion($idquest, $idBank)
