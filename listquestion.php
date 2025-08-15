@@ -48,6 +48,12 @@ session_start();
             </div>
             <div class="search-warpper">
                 <form action="<?php echo $_SERVER['PHP_SELF'] ?>">
+                    <label for="">Tìm kiếm theo:</label>
+                    <select name="typesearch" id="">
+                        <option value="1">Tiêu đề</option>
+                        <option value="2">Đáp án</option>
+                        <option value="3">Tiêu đề và đáp án</option>
+                    </select>
                     <input type="text" style="display: none;" name="idbank" value="<?php echo $_GET['idbank'] ?>">
                     <input type="text" name="search" placeholder="Tìm kiếm câu hỏi...">
                     <input type="submit" name="sumit-btn" value="Tìm kiếm">
@@ -73,8 +79,13 @@ session_start();
                     if(isset($_GET['search']))
                     {
                         $searchKey = htmlspecialchars(trim($_GET['search']));
-                        $result = $questDAO->getFromQuery("Select * from question where IDBank = ".$_GET['idbank']." AND Title LIKE '%". $searchKey."%' ORDER BY STT ASC");
-                    }
+                        if($_GET['typesearch'] == 1)
+                            $result = $questDAO->getFromQuery("Select * from question where IDBank = ".$_GET['idbank']." AND Title LIKE '%". $searchKey."%' ORDER BY STT ASC");
+                        else if($_GET['typesearch'] == 2)
+                             $result = $questDAO->getFromQuery("Select * from question where IDBank = ".$_GET['idbank']." AND (Ans1 LIKE '%". $searchKey."%' OR Ans3 LIKE '%". $searchKey."%' OR Ans4 LIKE '%". $searchKey."%') ORDER BY STT ASC");
+                        else if($_GET['typesearch'] == 3)
+                            $result = $questDAO->getFromQuery("Select * from question where IDBank = ".$_GET['idbank']." AND ( Title LIKE '%". $searchKey."%'  OR Ans1 LIKE '%". $searchKey."%' OR Ans3 LIKE '%". $searchKey."%' OR Ans4 LIKE '%". $searchKey."%') ORDER BY STT ASC");
+                    }  
                     else
                     {
                     $result = $questDAO->getFromQuery("Select * from question where IDBank = ".$_GET['idbank']." ORDER BY STT ASC
